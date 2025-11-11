@@ -1,0 +1,22 @@
+# Requirements para tests de cp2ageb
+
+# Test framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-xdist>=3.3.1
+
+# Database testing
+psycopg2-binary>=2.9.6
+
+# Mocking
+pytest-mock>=3.11.1
+
+# Para tests HTTP
+requests-mock>=1.11.0
+
+# Coverage reporting
+coverage>=7.2.7
+
+# Code quality (opcional)
+pytest-flake8>=1.1.1
+pytest-pylint>=0.19.0

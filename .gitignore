@@ -1,0 +1,68 @@
+# Data files
+data/
+
+# Docker
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Benchmark results
+benchmark_results_*.txt
+benchmark_results_*.txt.load.log
+.benchmark_state
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+*.log
+
+# Backup files (pero permitir queries/*.sql)
+/*.sql
+*.sql.gz
+backup_*.sql
+pgdata-backup.tar.gz
+
+# Temporary files
+*.tmp
+*.temp
+.~*
+
+# Documentation builds (if using Sphinx, etc.)
+docs/_build/
+docs/.doctrees/
+
+# Local notes
+notes.md
+TODO.md
+NOTES.txt
+CLAUDE_DEV.md
+commit_plan.sh
+
+# Old documentation
+doc/
+*_OLD.md

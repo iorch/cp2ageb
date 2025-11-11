@@ -1,0 +1,50 @@
+services:
+  postgis:
+    build: .
+    container_name: cp2ageb-postgis
+    environment:
+      POSTGRES_DB: cp2ageb
+      POSTGRES_USER: geouser
+      POSTGRES_PASSWORD: geopassword
+      PGDATA: /var/lib/postgresql/data/pgdata
+      # Control de descarga y carga automática
+      AUTO_DOWNLOAD: "true"   # Descarga automática de shapefiles si no existen
+      AUTO_LOAD: "true"        # Carga automática de shapefiles a PostGIS
+      # Control de capas INEGI a cargar (mejora rendimiento si solo necesitas AGEBs)
+      LOAD_AGEBS: "true"       # AGEBs urbanas y rurales (NECESARIO para mapeo CP→AGEB)
+      LOAD_MANZANAS: "false"   # Manzanas (opcional, aumenta tiempo de carga ~50%)
+      LOAD_LOCALIDADES: "false" # Localidades (opcional)
+      LOAD_MUNICIPIOS: "false"  # Municipios (opcional)
+      LOAD_ENTIDADES: "false"   # Entidades/Estados (opcional)
+      # Control de estados a cargar (útil para pruebas o carga parcial)
+      # Formatos válidos: "01,02,03" o "Ags,BC,BCS" o "Aguascalientes,Baja California"
+      # Por defecto: Jalisco, Edo Mex, CDMX, Nuevo León (principales zonas metropolitanas)
+      # "all" carga todos los 32 estados
+      LOAD_ESTADOS: "All" # "14,15,09,19"  # Jal, Edo Mex, CDMX, NL
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persistencia de la base de datos
+      - pgdata:/var/lib/postgresql/data
+      # Montar directorios de shapefiles (read-write para permitir descarga)
+      - ./data/cp_shapefiles:/data/cp_shapefiles
+      - ./data/ageb_shapefiles:/data/ageb_shapefiles
+      # Scripts para cargar datos
+      - ./scripts:/scripts
+      # Queries SQL (actualizaciones en tiempo real)
+      - ./queries:/queries
+    networks:
+      - geonet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U geouser -d cp2ageb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  geonet:
+    driver: bridge
